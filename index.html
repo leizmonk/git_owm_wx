@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="static/css/style.css" />
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,700,400italic' rel='stylesheet' type='text/css'>
-	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>	
 	<script src="static/js/search.js"></script>	
 </head>
@@ -17,8 +17,9 @@
 		<div class="col-md-3 spacer"></div>
 	    <div class="col-md-6">
 	    	<h1>Search Weather for a Location</h1>
-	        <form method="POST" id="search-form">
+	        <form method="GET" id="search-form">
 	            <div class="fieldWrapper" id="the_query">
+	            <input type="text" id="id_search_location"></input>
 	            <input type="submit" value="Search" class="btn btn-primary">
 	            </div>
 	        </form>
