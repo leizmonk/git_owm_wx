@@ -13,11 +13,13 @@ $(function() {
         var queryString = $('#id_search_location').val();
         var queryURL = apiURL + queryString;
 
+        // Render data retrieved from API into HTML template
         $.getJSON(queryURL, function(data) {
             $('#lat').html(data.coord.lat);
             $('#lon').html(data.coord.lon);
             $('#loc_name').html(data.name);
             $('#country').html(data.sys.country);
+            // Call Unixtime conversion function
             convertUnixtime(data);
             $('#con').html(data.weather[0].description);
             $('#temp-far').html(((data.main.temp * (9/5)) - 459.67).toFixed(1) + "ºF");
@@ -25,79 +27,9 @@ $(function() {
             $('#hum').html((data.main.humidity).toFixed(2) + "%");
             $('#wind').html((data.wind.speed * 2.23693629).toFixed(2) + "Mph");
             convertWindDirection(data);
-            $('#pres').html(data.main.pressure.toFixed(2) + "mb");
-
-
-
-            // if(data.weather[0].id == '800') { 
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/clear-sky.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '801') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/few-clouds.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '802') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/broken-clouds.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '803') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/broken-clouds.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '804') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/overcast.jpg") no-repeat center center fixed',
-            //     });
-            // } else if($.inArray(data.weather[0].id, ['300','301','302','310','311','312','313','314','321','500','520'])) {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/rain-lite.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '501' || data.weather[0].id == '521') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/rain-med.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '600' || data.weather[0].id == '620') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/light-snow.jpg") no-repeat center center fixed',
-            //     });
-            // } else if($.inArray(data.weather[0].id, ['601','602','615','616','621','622'])) {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/heavy-snow.jpg") no-repeat center center fixed',
-            //     });
-            // } else if($.inArray(data.weather[0].id, ['511','611','612'])) {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/freezing-rain.jpg") no-repeat center center fixed',
-            //     });  
-            // } else if(data.weather[0].id == '701' || data.weather[0].id == '741') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/dense-fog.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '711') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/smoky-sky.jpg") no-repeat center center fixed',
-            //     });
-            // } else if(data.weather[0].id == '721') {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/haze.jpg") no-repeat center center fixed',
-            //     });
-            // } else if($.inArray(data.weather[0].id, ['731','751','761'])) {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/sand.jpg") no-repeat center center fixed',
-            //     });
-            // } else if($.inArray(data.weather[0].id, ['502','503','504','522'])) {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/heavy_rain.jpg") no-repeat center center fixed',
-            //     });
-            // } else if($.inArray(data.weather[0].id, ['200','201','202','210','211','212','221','230','231','232'])) {
-            //     $('body').css({
-            //         'background': 'url("./static/imgs/thunderstorm.jpg") no-repeat center center fixed',
-            //     });
-            // } else {
-            //     return false;
-            // }
-        
-        changeBackground(data);
+            $('#pres').html(data.main.pressure.toFixed(2) + "mb");        
+            // Call function to change background based on reported conditions
+            changeBackground(data);
         });
     }
 
@@ -107,28 +39,97 @@ $(function() {
         var conditionCode = data.weather[0].id;
         console.log(conditionCode);
 
+        // Cases for different condition codes to set differing background URLs
         switch (conditionCode) {
-
-        case 800:
-            imgURL = 'url("./static/imgs/clear-sky.jpg")';
-            break;
-
-        case 801:
-            imgURL = 'url("./static/imgs/few-clouds.jpg")';
-            break;
-
-        case 802:
-            imgURL = 'url("./static/imgs/broken-clouds.jpg")';
-            break;
+            case 200:
+            case 201:
+            case 202:
+            case 210:
+            case 211:
+            case 212:
+            case 221:
+            case 230:
+            case 231:
+            case 232:
+                imgURL = 'url("./static/imgs/thunderstorm.jpg")';
+                break;
+            case 300:
+            case 301:
+            case 302:
+            case 310:
+            case 311:
+            case 312:
+            case 313:
+            case 314:
+            case 321:
+            case 500:
+            case 520:
+                imgURL = 'url("./static/imgs/rain-lite.jpg")';
+                break;
+            case 501:
+            case 521:
+                imgURL = 'url("./static/imgs/rain-med.jpg")';
+                break;
+            case 502:
+            case 503:
+            case 504:
+            case 522:
+                imgURL = 'url("./static/imgs/heavy_rain.jpg")';
+                break; 
+            case 511:
+            case 611:
+            case 612:
+                imgURL = 'url("./static/imgs/freezing-rain.jpg")';
+                break;
+            case 600:
+            case 620:
+                imgURL = 'url("./static/imgs/light-snow.jpg")';
+                break;
+            case 601:
+            case 602:
+            case 615:
+            case 616:
+            case 621:
+            case 622:
+                imgURL = 'url("./static/imgs/heavy-snow.jpg")';
+                break;
+            case 701:
+            case 741:
+                imgURL = 'url("./static/imgs/dense-fog.jpg")';
+                break;
+            case 711:
+                imgURL = 'url("./static/imgs/smoky-sky.jpg")';
+                break;
+            case 721:
+                imgURL = 'url("./static/imgs/haze.jpg")';
+                break;
+            case 731:
+            case 751:
+            case 761:
+                imgURL = 'url("./static/imgs/sand.jpg")';
+                break; 
+            case 800:
+                imgURL = 'url("./static/imgs/clear-sky.jpg")';
+                break;
+            case 801:
+                imgURL = 'url("./static/imgs/few-clouds.jpg")';
+                break;
+            case 802:
+                imgURL = 'url("./static/imgs/broken-clouds.jpg")';
+                break;
+            case 804:
+                imgURL = 'url("./static/imgs/overcast.jpg")';
+                break;
+            default:
+                return false;    
         }
+        // Call function to update css in the document body
         updateCSS(imgURL);
     }
 
+    // Updates background of the page body to reflect reported weather condition codes
     function updateCSS(imgURL) {
-        console.log(imgURL);
         var changes = imgURL + ' no-repeat center center fixed';
-        console.log(changes);
-
         $('body').css('background', changes);
     }    
 
