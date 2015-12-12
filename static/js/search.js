@@ -9,9 +9,10 @@ $(function() {
 
     // getJSON for searching
     function wxSearch() {
+        var apiKey = '5389f5d89e795ee478428069759661f6';
         var apiURL = "http://api.openweathermap.org/data/2.5/weather?q=";
         var queryString = $('#id_search_location').val();
-        var queryURL = apiURL + queryString;
+        var queryURL = apiURL + queryString + '&APPID=' + apiKey; 
 
         // Render data retrieved from API into HTML template
         $.getJSON(queryURL, function(data) {
