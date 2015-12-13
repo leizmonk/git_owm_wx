@@ -12,10 +12,26 @@ $(function() {
         var apiKey = '5389f5d89e795ee478428069759661f6';
         var apiURL = "http://api.openweathermap.org/data/2.5/weather?q=";
         var queryString = $('#id_search_location').val();
+        var isNumber = /^\d+$/.test(queryString);
+
+        if ((isNumber = true) && (queryString.length = 5)) {
+            var queryString = queryString + ',us';
+        }
+
         var queryURL = apiURL + queryString + '&APPID=' + apiKey; 
 
         // Render data retrieved from API into HTML template
         $.getJSON(queryURL, function(data) {
+            if (data.cod != 200) {
+                $('.alert').html(data.message);
+
+                $('.alert').slideDown(function() {
+                    setTimeout(function() {
+                        $('.alert').slideUp();
+                    }, 5000);
+                });
+            }            
+
             $('#lat').html(data.coord.lat);
             $('#lon').html(data.coord.lon);
             $('#loc_name').html(data.name);
@@ -38,7 +54,6 @@ $(function() {
     function changeBackground(data) {
         var imgURL = "";
         var conditionCode = data.weather[0].id;
-        console.log(conditionCode);
 
         // Cases for different condition codes to set differing background URLs
         switch (conditionCode) {
