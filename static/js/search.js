@@ -10,7 +10,7 @@ $(function() {
     // getJSON for searching
     function wxSearch() {
         var apiKey = '5389f5d89e795ee478428069759661f6';
-        var apiURL = "http://api.openweathermap.org/data/2.5/weather?q=";
+        var apiURL = 'http://api.openweathermap.org/data/2.5/weather?q=';
         var queryString = $('#id_search_location').val();
         var isNumber = /^\d+$/.test(queryString);
 
@@ -23,7 +23,7 @@ $(function() {
         // Render data retrieved from API into HTML template
         $.getJSON(queryURL, function(data) {
             if (data.cod != 200) {
-                $('.alert').html(data.message);
+                $('.alert').html('<img src="./static/imgs/sad-cloud.png"/>' + '<br />' + data.message);
 
                 $('.alert').slideDown(function() {
                     setTimeout(function() {
@@ -39,12 +39,12 @@ $(function() {
             // Call Unixtime conversion function
             convertUnixtime(data);
             $('#con').html(data.weather[0].description);
-            $('#temp-far').html(((data.main.temp * (9/5)) - 459.67).toFixed(1) + "ºF");
-            $('#temp-cel').html((data.main.temp - 273.15).toFixed(1) + "ºC");
-            $('#hum').html((data.main.humidity).toFixed(2) + "%");
-            $('#wind').html((data.wind.speed * 2.23693629).toFixed(2) + "Mph");
+            $('#temp-far').html(((data.main.temp * (9/5)) - 459.67).toFixed(1) + 'ºF');
+            $('#temp-cel').html((data.main.temp - 273.15).toFixed(1) + 'ºC');
+            $('#hum').html((data.main.humidity).toFixed(2) + '%');
+            $('#wind').html((data.wind.speed * 2.23693629).toFixed(2) + 'Mph');
             convertWindDirection(data);
-            $('#pres').html(data.main.pressure.toFixed(2) + "mb");        
+            $('#pres').html(data.main.pressure.toFixed(2) + 'mb');        
             // Call function to change background based on reported conditions
             changeBackground(data);
         });
